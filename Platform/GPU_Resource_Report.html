@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>GPU Resource Report</title>	
+	<link rel=stylesheet type="text/css" href="style.css">
+
+	<script src="jquery-latest.js"></script>
+	<script src="jquery-2.1.4.min.js"></script>	
+	<script src="jquery.min.js"></script>
+	<script src="config.js"></script>
+	<script>
+
+		function CreatePCInfo(num)
+		{
+			var PCInfoContent = '<center>';
+			var PCName = 'PCName_';
+			var AdjustNum = num 
+			var tempContent = '';
+			if (num % 3 != 0)
+			{
+				AdjustNum = num - (num % 3) + 3
+			}
+			for (i = 0; i < AdjustNum ; i++)
+			{
+				tempContent = 
+				'<div style="width: 27%; display:inline-block; margin: 1%;">'+
+					'<div id="lights"><ul>'+
+							'<table id="' + PCName + i + '">'+
+							'<thead>'+
+								'<tr>'+
+									'<th>努力加載中</th>'+
+								'</tr>'+
+							'</thead>'+
+							'</table>'+
+						'</ul></div>'+
+				'</div>';	
+				if(i >= num)
+				{ 
+					tempContent = tempContent.replace('<div id="lights"><ul>','');
+					tempContent = tempContent.replace('</ul></div>','');
+					tempContent = tempContent.replace('努力加載中','');
+				}
+				PCInfoContent += tempContent;
+			}
+			PCInfoContent += '</center>';
+			return PCInfoContent;
+		}
+
+		function GetPcInfo(selector,PCName) 
+		{
+			var ResourceInfo= 'http://'+PCName+'/GetResourceInfo'; 
+			$(selector).load(ResourceInfo);	
+        }
+
+		$(document).ready(function(){
+
+			var GPU_PC_List = appConfig.GPU_PC_List;
+			var GPU_PC_Array = GPU_PC_List.split(',');
+			var num = GPU_PC_Array.length
+
+            document.getElementById("GPUResourceReport").innerHTML = CreatePCInfo(num);
+			
+			var PCName = 'PCName_'
+			for (i = 0; i < num ; i++) {
+				GetPcInfo('#' + PCName + i, GPU_PC_Array[i]);
+			}
+
+		});
+	</script>
+
+  </head>
+
+  <body>
+	
+    <img src="pic/TeamDL.png" height="140" width="140"  style="float: left"><br><br><h1 style="display: inline;" ><span style="font-family:Microsoft JhengHei;">GPU Resource</span></h1>
+	<br><br><br><br>
+
+	<div id="GPUResourceReport">This Part Will Show GPUResourceReport</div>
+
+
+ </body>
+</html>
+

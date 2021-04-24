@@ -1,0 +1,53 @@
+﻿body {
+  /* 內文採用非襯線字體 */
+  font-family:"微軟正黑體", "黑體-繁", sans-serif;
+  /* 灰色背景 */
+  background-color:#CCC;
+/*
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+   user-select: none;*/
+
+}
+
+.sw {
+  /* 上下不留白，左右留白半個字體高 */
+  margin:0 0.5em;
+  /* 以粗體字樣式呈現 */
+  font-weight:bolder;
+  }
+
+.on {
+  color:#F00;  /* 紅色字體 */
+}
+
+.off {
+  color:#090;	/* 綠色字體 */
+}
+
+/* 設定lights區塊 */
+#lights {
+  /* 邊框圓角半徑 15像素 */
+  border-radius:15px;
+  -moz-border-radius:15px;
+  -webkit-border-radius:15px;
+  /* 白色背景 */
+  background-color:#FFF;
+  /* 內距 1像素 */
+  padding:15px;
+}
+
+/* 設定lights 區塊裡的清單樣式 */
+#lights ul {
+  /* 不顯示圓點 */
+  list-style-type:none;
+  /* 左邊內距為 0（取消預設的清單元素縮排）*/
+  padding-left:0px;
+  /* 字體大小：12點 */
+  font-size:12pt;
+}
+
+

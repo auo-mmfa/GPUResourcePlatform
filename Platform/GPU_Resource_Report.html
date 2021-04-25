@@ -57,7 +57,7 @@
 		$(document).ready(function(){
 
 			var GPU_PC_List = appConfig.GPU_PC_List;
-			var GPU_PC_Array = GPU_PC_List.split(',');
+			var GPU_PC_Array = GPU_PC_List.replace(/(\s*$)/g, '').split(' ');
 			var num = GPU_PC_Array.length
 
             document.getElementById("GPUResourceReport").innerHTML = CreatePCInfo(num);

@@ -25,7 +25,7 @@
 			for (i = 0; i < AdjustNum ; i++)
 			{
 				tempContent = 
-				'<div style="width: 27%; display:inline-block; margin: 1%;">'+
+				'<div id style="width: 30%; display:inline-block; margin: 1%;vertical-align: top;">'+
 					'<div id="lights"><ul>'+
 							'<table id="' + PCName + i + '">'+
 							'<thead>'+
@@ -64,7 +64,7 @@
 			
 			var PCName = 'PCName_'
 			for (i = 0; i < num ; i++) {
-				GetPcInfo('#' + PCName + i, GPU_PC_Array[i]);
+				GetPcInfo('#' + PCName + i, GPU_PC_Array[i]+":8081");
 			}
 
 		});
@@ -74,7 +74,7 @@
 
   <body>
 	
-    <img src="pic/TeamDL.png" height="140" width="140"  style="float: left"><br><br><h1 style="display: inline;" ><span style="font-family:Microsoft JhengHei;">GPU Resource</span></h1>
+    <img src="./pic/TeamDL.png" height="140" width="140"  style="float: left"><br><br><h1 style="display: inline;" ><span style="font-family:Microsoft JhengHei;">GPU Resource</span></h1>
 	<br><br><br><br>
 
 	<div id="GPUResourceReport">This Part Will Show GPUResourceReport</div>

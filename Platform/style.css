@@ -38,6 +38,7 @@
   background-color:#FFF;
   /* 內距 1像素 */
   padding:15px;
+  vertical-align: top;
 }
 
 /* 設定lights 區塊裡的清單樣式 */
@@ -49,5 +50,6 @@
   /* 字體大小：12點 */
   font-size:12pt;
 }
+
 
 

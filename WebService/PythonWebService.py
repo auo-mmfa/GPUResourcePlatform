@@ -48,7 +48,7 @@ def GetActiveUsers():
         if("使用中" in line[i]):
             userInfo = line[i].split("  ")[0].strip()
             activeUsers.append(userInfo)
-    return "登入中的User: "+str(activeUsers)
+    return "登入中的User: "+str(activeUsers)+"<hr size=""2"" align=""center"" noshade width=""100%"" color=""#D3D3D3"">"
 
 @app.route("/GetHostname",methods=["GET"])
 def GetHostname():
@@ -78,7 +78,8 @@ def GetNvidiaGPUInfo():
         #print("GPU Name: "+ gpu_name.decode("utf-8"))
         result += "MemoryInfo：{0}M/{1}M，使用率：{2}%".format("%.1f" % (usedMemory / 1024 / 1024), "%.1f" % (totalMemory / 1024 / 1024), "%.1f" % (usedMemory/totalMemory*100)) + "<br>"
         #print("MemoryInfo：{0}M/{1}M，使用率：{2}%".format("%.1f" % (usedMemory / 1024 / 1024), "%.1f" % (totalMemory / 1024 / 1024), "%.1f" % (usedMemory/totalMemory*100)))
-        result += "Temperature：{0}°C".format(temperature) + "<br>"
+        result += "Temperature：{0}°C".format(temperature)
+        result += "<hr size=""2"" align=""center"" noshade width=""100%"" color=""#D3D3D3"">"
         #print("Temperature：{0}°C".format(temperature))
         
         #print("Performance：{0}".format(performance))
@@ -93,8 +94,8 @@ def GetNvidiaGPUInfo():
 def GetResourceInfo(): 
     hostname = socket.gethostname()
     ResourceInfo = ""
-    ResourceInfo += GetHostname() +"<hr size=""2"" align=""center"" noshade width=""100%"" color=""#D3D3D3"">"+ GetActiveUsers() + "<br>" + GetNvidiaGPUInfo() 
+    ResourceInfo += GetHostname() +"<hr size=""2"" align=""center"" noshade width=""100%"" color=""#D3D3D3"">"+ GetActiveUsers() + GetNvidiaGPUInfo() 
     return ResourceInfo
 
 if(__name__=="__main__") :
-    app.run(host='0.0.0.0', port=80,threaded=True,debug=False)
+    app.run(host='0.0.0.0', port=8081,threaded=True,debug=False)

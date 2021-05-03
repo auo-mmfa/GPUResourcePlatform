@@ -4,7 +4,7 @@ import os
 
 pynvml.nvmlInit()
 
-def GetNvidiaGPUInfo():
+def GetNvidiaGPUInfo(pidUserDict,PidCommandlineDic):
     gpucount = pynvml.nvmlDeviceGetCount()
     result = ""
     for gpu_id in range(gpucount):
@@ -33,35 +33,45 @@ def GetNvidiaGPUInfo():
         #print("FanSpeed: {0}".format(FanSpeed))
         #print("UtilizationRates: {0}".format(UtilizationRates.gpu))  
         for proc in pynvml.nvmlDeviceGetComputeRunningProcesses(handle):
-            userName, exeName = GetUserAndExeName(str(proc.pid))
-            if (exeName.lower() != "cmd.exe"):
-                continue
-            else:
-                commandline = GetCommandLine(str(proc.pid))
-                print(commandline)
-    return result
+            if str(proc.pid) in pidUserDict:
+                userName =  pidUserDict[str(proc.pid)]
+                commandline = PidCommandlineDic[str(proc.pid)]
+                result += "User: "+userName+", Job: "+commandline+ "<br>"
+    return result    
 
-def GetUserAndExeName(GPUPID):
-    inputCommand = "tasklist /v /nh /fi  \"PID eq " +GPUPID+"\""
+def MakePidUserDic():
+    pidUserDict = {}
+    inputCommand = "tasklist /v /nh /fi \"IMAGENAME eq python.exe\""
     taskLine =subprocess.Popen(inputCommand,shell=True,stdout=subprocess.PIPE, universal_newlines=True).communicate()
-    taskInfo = taskLine[0].split()
-    exeName = taskInfo[0]
-    userNameWithHost = taskInfo[7]
-    userName = userNameWithHost.split('\\')[1].lower()
-    return userName,exeName
+    taskCollection = taskLine[0].split("\n")
+    word = "AUO"
+    for i in range(len(taskCollection)):
+        if word in taskCollection[i]:
+            taskInfo = taskCollection[i].split()
+            pid = taskInfo[1]
+            userNameWithHost = taskInfo[-3]
+            userName = userNameWithHost.split('\\')[1].lower()
+            pidUserDict[pid] = userName
+    return pidUserDict
 
-def GetCommandLine(ParentPID):
-    inputCommand = "wmic process where \"ParentProcessId="+str(ParentPID)+"\" get commandline,description"
+def MakePidCommandlineDic():
+    pidCommandlineDict = {}
+    inputCommand = "wmic process where name=\"python.exe\" get commandline,processid"
     taskLine = os.popen(inputCommand).read()
     indexOfEnter = taskLine.index("\n")
     removeNoisetaskLine = taskLine[indexOfEnter:].lstrip().rstrip()
-    indexOfSplitBlank = removeNoisetaskLine.rfind(" ")
-    commandline = removeNoisetaskLine[:indexOfSplitBlank]
-    description = removeNoisetaskLine[indexOfSplitBlank+1:]
-    if(description.lower() == "python.exe"):
-        return commandline
-    else:
-        return "It's not a python Job"        
+    taskCollection = taskLine.split("\n")
+    word = "python"
+    for i in range(len(taskCollection)):
+        if word in taskCollection[i]:
+            taskInfo = taskCollection[i].split()
+            pid = taskInfo[-1]
+            commandline = taskCollection[i].replace(pid,"").lstrip().rstrip()
+            pidCommandlineDict[pid] = commandline
+    return pidCommandlineDict
+       
 
 if(__name__=="__main__") :
-    print(GetNvidiaGPUInfo())
+    pidUserDict = MakePidUserDic()
+    PidCommandlineDic = MakePidCommandlineDic()
+    print(GetNvidiaGPUInfo(pidUserDict,PidCommandlineDic))
